@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Home - Exam Portal</title>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <nav
+      class="bg-white shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-50"
+    >
+      <div class="flex items-center gap-4">
+        <a href="profile.html" class="group transition duration-300">
+          <div
+            class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl border-2 border-transparent group-hover:border-blue-600 group-hover:bg-white group-hover:text-blue-600 overflow-hidden"
+          >
+            <span id="user-initials">U</span>
+          </div>
+        </a>
+        <div>
+          <p class="text-xs text-gray-500">Welcome back,</p>
+          <p id="display-name" class="font-bold text-gray-800">User</p>
+        </div>
+      </div>
+      <button
+        onclick="logout()"
+        class="text-sm text-red-600 hover:underline font-medium"
+      >
+        Logout
+      </button>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-6 space-y-12">
+      <section>
+        <div class="flex items-center gap-2 mb-6">
+          <div class="h-8 w-1 bg-green-600 rounded-full"></div>
+          <h2 class="text-2xl font-bold text-gray-800">Required Exams</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          >
+            <span
+              class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded uppercase"
+              >Active</span
+            >
+            <h3 class="text-xl font-bold mt-3 text-gray-800">
+              Advanced Mathematics
+            </h3>
+            <p class="text-gray-500 text-sm mt-2">
+              Duration: 60 mins • 30 Questions
+            </p>
+            <a
+              href="exam-math.html"
+              class="mt-6 block w-full text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-medium"
+            >
+              Start Exam
+            </a>
+          </div>
+
+          <div
+            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          >
+            <span
+              class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded uppercase"
+              >Active</span
+            >
+            <h3 class="text-xl font-bold mt-3 text-gray-800">Physics 101</h3>
+            <p class="text-gray-500 text-sm mt-2">
+              Duration: 45 mins • 20 Questions
+            </p>
+            <a
+              href="exam-physics.html"
+              class="mt-6 block w-full text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-medium"
+            >
+              Start Exam
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="flex items-center gap-2 mb-6">
+          <div class="h-8 w-1 bg-blue-600 rounded-full"></div>
+          <h2 class="text-2xl font-bold text-gray-800">Previous Exams</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            class="bg-gray-100 border border-gray-200 rounded-xl p-6 opacity-90"
+          >
+            <div class="flex justify-between items-start">
+              <h3 class="text-lg font-bold text-gray-700">
+                English Literature
+              </h3>
+              <span class="text-blue-600 font-bold">85/100</span>
+            </div>
+            <p class="text-gray-500 text-xs mt-1">Completed: Oct 12, 2023</p>
+            <hr class="my-4 border-gray-200" />
+            <a
+              href="results-english.html"
+              class="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1"
+            >
+              View Previous Answers <span>&rarr;</span>
+            </a>
+          </div>
+
+          <div
+            class="bg-gray-100 border border-gray-200 rounded-xl p-6 opacity-90"
+          >
+            <div class="flex justify-between items-start">
+              <h3 class="text-lg font-bold text-gray-700">Computer Science</h3>
+              <span class="text-blue-600 font-bold">92/100</span>
+            </div>
+            <p class="text-gray-500 text-xs mt-1">Completed: Sep 28, 2023</p>
+            <hr class="my-4 border-gray-200" />
+            <a
+              href="results-cs.html"
+              class="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1"
+            >
+              View Previous Answers <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // Load User Data
+      document.addEventListener("DOMContentLoaded", () => {
+        const userStr = localStorage.getItem("currentUser");
+        if (!userStr) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        const user = JSON.parse(userStr);
+        document.getElementById("display-name").innerText = user.username;
+        document.getElementById("user-initials").innerText = user.username
+          .charAt(0)
+          .toUpperCase();
+      });
+
+      const logout = () => {
+        localStorage.removeItem("currentUser");
+        window.location.href = "login.html";
+      };
+    </script>
+  </body>
+</html>
