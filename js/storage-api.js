@@ -1,11 +1,9 @@
 const StorageAPI = {
-  // 1. Get all students from users list
   getStudents: () => {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
-    return users.filter((u) => u.Role === "Student" || u.Role === 0); // Assuming 0 is student role
+    return users.filter((u) => u.Role === "Student" || u.Role === 0);
   },
 
-  // 2. Save/Update Exam with Versioning
   saveExam: (examData) => {
     let exams = JSON.parse(localStorage.getItem("exams") || "[]");
     let existingExamIndex = exams.findIndex((e) => e.id === examData.id);
@@ -13,7 +11,6 @@ const StorageAPI = {
     let finalId = examData.id;
 
     if (existingExamIndex > -1) {
-      // New Version Logic
       let existingExam = exams[existingExamIndex];
       const newVersionId = existingExam.currentVersion + 1;
 
@@ -27,7 +24,7 @@ const StorageAPI = {
       });
       exams[existingExamIndex] = existingExam;
     } else {
-      // Brand New Exam
+      //triggered when new exam is here
       finalId = examData.id || Date.now().toString();
       const newExam = {
         id: finalId,
@@ -49,7 +46,6 @@ const StorageAPI = {
     return finalId;
   },
 
-  // 3. Assign Exam to specific students
   assignExam: (examId, versionId, studentIds) => {
     let assignments = JSON.parse(localStorage.getItem("AssignedExams") || "[]");
 
@@ -68,7 +64,6 @@ const StorageAPI = {
     localStorage.setItem("AssignedExams", JSON.stringify(assignments));
   },
 
-  // 4. Save Question Image to IndexedDB
   saveQuestionImage: (id, base64) => {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open("UserAssets", 4);
@@ -109,7 +104,6 @@ const StorageAPI = {
     });
   },
 
-  // 5. Get Question Image from IndexedDB
   getQuestionImage: (id) => {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open("UserAssets", 4);
@@ -146,25 +140,21 @@ const StorageAPI = {
     });
   },
 
-  // 6. Get Student Assignments
   getStudentAssignments: (studentId) => {
     const assignments = JSON.parse(
       localStorage.getItem("AssignedExams") || "[]",
     );
     const exams = JSON.parse(localStorage.getItem("exams") || "[]");
 
-    // Find assignments for this student (Handle String/Number mismatch)
     const myAssignments = assignments.filter(
       (a) => String(a.studentId) === String(studentId),
     );
 
-    // Map to exam details
     return myAssignments
       .map((a) => {
         const exam = exams.find((e) => e.id === a.examId);
         if (!exam) return null;
 
-        // Get specific version
         const version = exam.versions.find((v) => v.versionId === a.versionId);
         if (!version) return null;
 
@@ -181,7 +171,6 @@ const StorageAPI = {
       .filter((e) => e !== null);
   },
 
-  // 7. Update Assignment Status
   updateAssignmentStatus: (assignmentId, status) => {
     let assignments = JSON.parse(localStorage.getItem("AssignedExams") || "[]");
     const index = assignments.findIndex((a) => a.assignmentId === assignmentId);
@@ -191,14 +180,12 @@ const StorageAPI = {
     }
   },
 
-  // 7. Save Exam Result
   saveExamResult: (result) => {
     const results = JSON.parse(localStorage.getItem("ExamResults") || "[]");
     results.push(result);
     localStorage.setItem("ExamResults", JSON.stringify(results));
   },
 
-  // 8. Get Student Results
   getStudentResults: (studentId) => {
     const results = JSON.parse(localStorage.getItem("ExamResults") || "[]");
     return results.filter((r) => r.studentId === studentId);

@@ -5,7 +5,7 @@ class PopupMsg {
 
   constructor(Msg, Type, Time = 3000) {
     this.Time = Time;
-    console.log("This is the type:", Type);
+
     switch (Type) {
       case MsgType.Hint:
         this.hintPopup(Msg);

@@ -38,7 +38,6 @@
     </nav>
 
     <main class="max-w-6xl mx-auto p-6 space-y-12">
-      <!-- Dashboard Section -->
       <div id="dashboard-section">
         <section>
           <div class="flex items-center gap-2 mb-6">
@@ -48,9 +47,7 @@
           <div
             id="required-exams-grid"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            <!-- Dynamic Content -->
-          </div>
+          ></div>
         </section>
 
         <section class="mt-12">
@@ -61,15 +58,11 @@
           <div
             id="previous-exams-grid"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            <!-- Dynamic Content -->
-          </div>
+          ></div>
         </section>
       </div>
 
-      <!-- Exam Interface -->
       <section id="exam-interface" class="hidden max-w-3xl mx-auto">
-        <!-- Start Overlay -->
         <div
           id="start-overlay"
           class="text-center py-20 bg-white rounded-3xl shadow-lg border border-gray-100"
@@ -88,12 +81,10 @@
           </button>
         </div>
 
-        <!-- Question Container -->
         <div
           id="question-container"
           class="hidden bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden"
         >
-          <!-- Header -->
           <div
             class="bg-gray-50 p-6 flex justify-between items-center border-b border-gray-100"
           >
@@ -114,7 +105,6 @@
             </div>
           </div>
 
-          <!-- Progress Bar -->
           <div class="h-1 bg-gray-100 w-full">
             <div
               id="q-timer-bar"
@@ -123,7 +113,6 @@
             ></div>
           </div>
 
-          <!-- Content -->
           <div class="p-8 md:p-12 space-y-8">
             <div class="space-y-4">
               <p
@@ -136,12 +125,9 @@
               />
             </div>
 
-            <div id="choices-grid" class="grid grid-cols-1 gap-4">
-              <!-- Choices Buttons -->
-            </div>
+            <div id="choices-grid" class="grid grid-cols-1 gap-4"></div>
           </div>
 
-          <!-- Footer -->
           <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
             <button
               id="next-btn"
@@ -155,7 +141,6 @@
         </div>
       </section>
 
-      <!-- Result Interface -->
       <section
         id="result-interface"
         class="hidden max-w-md mx-auto text-center py-20"
@@ -189,7 +174,7 @@
     <script src="../js/popupMsg.js"></script>
     <script src="../js/storage-api.js"></script>
     <script src="../js/handleProfile.js"></script>
-    <script src="../js/student-exam.js"></script>
+    <script src="../js/studentData/student-exam.js"></script>
   </body>
 </html>
 

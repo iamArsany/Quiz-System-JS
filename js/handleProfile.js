@@ -37,15 +37,11 @@ if (displayNameEl) {
     }
 
     const user = JSON.parse(userStr);
-
-    // Bind username
     displayNameEl.innerText = user.username;
 
-    // Initials fallback
     const initialsEl = document.getElementById("user-initials");
     initialsEl.innerText = user.username.charAt(0).toUpperCase();
 
-    // Avatar
     const avatarImg = document.getElementById("user-avatar");
 
     try {
@@ -61,7 +57,6 @@ if (displayNameEl) {
     }
   });
 
-  // Trigger manually (since load doesn’t fire on divs)
   displayNameEl.dispatchEvent(new Event("load"));
 }
 
