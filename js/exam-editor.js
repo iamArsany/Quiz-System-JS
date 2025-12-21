@@ -29,6 +29,43 @@ const startNewExamFlow = () => {
   switchView("editor-section");
 };
 
+const editExam = (examId) => {
+  const exams = JSON.parse(localStorage.getItem("exams") || "[]");
+  const exam = exams.find((e) => e.id === examId);
+
+  if (!exam) return new PopupMsg("Exam not found", MsgType.Error);
+
+  currentExamId = exam.id;
+
+  // Get latest version questions
+  const latestVersion = exam.versions.find(
+    (v) => v.versionId === exam.currentVersion,
+  );
+  examQuestions = JSON.parse(JSON.stringify(latestVersion.questions)); // Deep copy
+  editIndex = 0;
+
+  // Populate Setup
+  const titleInput = document.getElementById("setup-title");
+  const durationInput = document.getElementById("setup-duration");
+  const countInput = document.getElementById("setup-count");
+
+  if (titleInput) titleInput.value = exam.title;
+  if (durationInput) durationInput.value = exam.duration;
+  if (countInput) countInput.value = examQuestions.length;
+
+  // Show Setup (so they can edit title/duration)
+  const setupDiv = document.getElementById("editor-setup");
+  const workspaceDiv = document.getElementById("question-workspace");
+
+  if (setupDiv) setupDiv.classList.remove("hidden");
+  if (workspaceDiv) {
+    workspaceDiv.classList.add("hidden");
+    workspaceDiv.innerHTML = "";
+  }
+
+  switchView("editor-section");
+};
+
 const saveAndNav = (newIndex) => {
   // Save current fields to array
   const q = examQuestions[editIndex];
@@ -102,18 +139,44 @@ const initQuestionEditor = () => {
   document.getElementById("question-workspace").classList.remove("hidden");
 
   // Initialize array based on user input
-  examQuestions = Array.from({ length: qCount }, (_, i) => ({
-    QNo: i + 1,
-    QText: "",
-    QScore: 0,
-    QC1: "",
-    QC2: "",
-    QC3: "",
-    QC4: "",
-    QAns: "",
-    QLevel: "Easy",
-    QImage: "",
-  }));
+  // Initialize array based on user input
+  if (currentExamId && examQuestions.length > 0) {
+    // Resize if needed
+    if (qCount > examQuestions.length) {
+      const start = examQuestions.length;
+      for (let i = 0; i < qCount - start; i++) {
+        examQuestions.push({
+          QNo: start + i + 1,
+          QText: "",
+          QScore: 0,
+          QC1: "",
+          QC2: "",
+          QC3: "",
+          QC4: "",
+          QAns: "",
+          QLevel: "Easy",
+          QImage: "",
+        });
+      }
+    } else if (qCount < examQuestions.length) {
+      examQuestions = examQuestions.slice(0, qCount);
+    }
+    // Re-index
+    examQuestions.forEach((q, i) => (q.QNo = i + 1));
+  } else {
+    examQuestions = Array.from({ length: qCount }, (_, i) => ({
+      QNo: i + 1,
+      QText: "",
+      QScore: 0,
+      QC1: "",
+      QC2: "",
+      QC3: "",
+      QC4: "",
+      QAns: "",
+      QLevel: "Easy",
+      QImage: "",
+    }));
+  }
 
   editIndex = 0;
   renderEditorUI();

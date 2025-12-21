@@ -36,6 +36,9 @@ const confirmAssignment = () => {
 
   console.log("Exam data", exam);
   console.log("Exams", exams);
+  if (!exam.currentVersion) {
+    return new PopupMsg("Cannot assign exam: No version found", MsgType.Error);
+  }
   StorageAPI.assignExam(targetExamId, exam.currentVersion, selectedIds);
 
   new PopupMsg("Exam Assigned Successfully!", MsgType.Success);

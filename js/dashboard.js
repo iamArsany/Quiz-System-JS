@@ -55,11 +55,11 @@ const RenderExams = () => {
                     <h3 class="font-bold text-lg text-gray-800">${exam.title}</h3>
                     <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-bold uppercase">v${exam.currentVersion}</span>
                 </div>
-                <p class="text-xs text-gray-500 mb-4">Duration: ${exam.duration} mins | ${exam.versions[exam.currentVersion - 1].questions.length} Qs</p>
+                <p class="text-xs text-gray-500 mb-4">Duration: ${exam.duration} mins | ${exam.versions?.[exam.currentVersion - 1]?.questions?.length || 0} Qs</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="openAssignmentView('${exam.id}')" class="flex-1 text-xs bg-gray-100 hover:bg-gray-200 py-2 rounded font-bold transition">Assign</button>
-                <button class="flex-1 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 rounded font-bold transition">Edit</button>
+                <button onclick="editExam('${exam.id}')" class="flex-1 text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 py-2 rounded font-bold transition">Edit</button>
             </div>
         </div>
     `,

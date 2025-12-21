@@ -10,6 +10,8 @@ const StorageAPI = {
     let exams = JSON.parse(localStorage.getItem("exams") || "[]");
     let existingExamIndex = exams.findIndex((e) => e.id === examData.id);
 
+    let finalId = examData.id;
+
     if (existingExamIndex > -1) {
       // New Version Logic
       let existingExam = exams[existingExamIndex];
@@ -26,8 +28,9 @@ const StorageAPI = {
       exams[existingExamIndex] = existingExam;
     } else {
       // Brand New Exam
+      finalId = examData.id || Date.now().toString();
       const newExam = {
-        id: examData.id || Date.now().toString(),
+        id: finalId,
         title: examData.title,
         teacherId: JSON.parse(localStorage.getItem("currentUser")).id,
         duration: examData.duration,
@@ -43,7 +46,7 @@ const StorageAPI = {
       exams.push(newExam);
     }
     localStorage.setItem("exams", JSON.stringify(exams));
-    return examData.id;
+    return finalId;
   },
 
   // 3. Assign Exam to specific students

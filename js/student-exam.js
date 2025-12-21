@@ -9,7 +9,7 @@ let questionTimeRemaining = 0; // Per question time
 
 document.addEventListener("DOMContentLoaded", () => {
   const student = JSON.parse(localStorage.getItem("currentUser"));
-  if (!student || student.Role !== 0) {
+  if (!student || (student.Role !== 0 && student.Role !== "Student")) {
     // 0 is Student
     window.location.href = "login.html";
     return;
@@ -23,8 +23,8 @@ const renderStudentDashboard = () => {
   const results = StorageAPI.getStudentResults(student.id);
 
   // Filter based on status
-  const requiredExams = assignments.filter(a => a.status === "Pending");
-  const completedExams = assignments.filter(a => a.status === "Completed");
+  const requiredExams = assignments.filter((a) => a.status === "Pending");
+  const completedExams = assignments.filter((a) => a.status === "Completed");
 
   // Render Required
   const requiredContainer = document.getElementById("required-exams-grid");
@@ -56,14 +56,17 @@ const renderStudentDashboard = () => {
       previousContainer.innerHTML = `<p class="text-gray-500 col-span-full text-center">No completed exams.</p>`;
     } else {
       previousContainer.innerHTML = completedExams
-        .map(
-          (exam) => {
-            // Find result for score
-            const result = results.find(r => r.assignmentId === exam.assignmentId);
-            const score = result ? result.score : 0;
-            const date = result ? new Date(result.dateTaken).toLocaleDateString() : "N/A";
+        .map((exam) => {
+          // Find result for score
+          const result = results.find(
+            (r) => r.assignmentId === exam.assignmentId,
+          );
+          const score = result ? result.score : 0;
+          const date = result
+            ? new Date(result.dateTaken).toLocaleDateString()
+            : "N/A";
 
-            return `
+          return `
                 <div class="bg-gray-100 border border-gray-200 rounded-xl p-6 opacity-90">
                     <div class="flex justify-between items-start">
                         <h3 class="text-lg font-bold text-gray-700">${exam.title}</h3>
@@ -72,8 +75,7 @@ const renderStudentDashboard = () => {
                     <p class="text-gray-500 text-xs mt-1">Completed: ${date}</p>
                 </div>
             `;
-          }
-        )
+        })
         .join("");
     }
   }
@@ -177,7 +179,7 @@ const renderQuestion = async () => {
   const choicesDiv = document.getElementById("choices-grid");
   choicesDiv.innerHTML = q.shuffledChoices
     .map(
-      (c, i) => `
+      (c) => `
         <button onclick="handleAnswer('${c.text}', this)" class="choice-btn w-full text-left p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 transition font-medium text-gray-700">
             ${c.text}
         </button>
