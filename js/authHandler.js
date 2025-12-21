@@ -1,21 +1,39 @@
-const RegistrationHandler = () => {
+const RegistrationHandler = async () => {
   const username = document.getElementById("reg-username").value;
   const email = document.getElementById("reg-email").value;
   const password = document.getElementById("reg-password").value;
+  const mobile = document.getElementById("reg-mobile").value;
+  const grade = document.getElementById("reg-grade").value;
+  const avatarFile = document.getElementById("reg-avatar").files[0];
 
   const isvalidPass = IsValidPassword(password);
   const isvalidUser = IsValidUsername(username);
   const isvalidEmail = IsValidEmail(email);
+  const isvalidMobile = IsValidMobile(mobile);
+  const isvalidGrade = IsValidGrade(grade);
+  const isvalidAvatar = IsValidAvatar(avatarFile);
 
-  if (isvalidEmail && isvalidUser && isvalidPass) {
+  if (
+    isvalidEmail &&
+    isvalidUser &&
+    isvalidPass &&
+    isvalidMobile &&
+    isvalidGrade &&
+    isvalidAvatar
+  ) {
+    const userId = Date.now();
+
+    await SaveImageToDB(userId, avatarFile);
+
     const users = JSON.parse(localStorage.getItem("users") || "[]");
-    console.log("users", users);
-    console.log("users", users);
     const newUser = {
-      id: Date.now(),
+      id: userId,
       username: username,
       email: email,
       password: password,
+      mobile: mobile,
+      grade: grade,
+      Role: UserRole.Student,
     };
 
     users.push(newUser);
@@ -44,17 +62,80 @@ const LoginHandler = () => {
 
     if (user) {
       localStorage.setItem("currentUser", JSON.stringify(user));
+      new PopupMsg("Login Successfully!", MsgType.Success);
 
       setTimeout(() => {
-        window.location.href = "home.html";
-        console.log("here in the login handler timeout ");
-        new PopupMsg("Login Successfully!", MsgType.Success);
+        console.log(user.Role);
+        if (user.Role == UserRole.Student) {
+          window.location.href = "home.html";
+        } else {
+          window.location.href = "dashboard.html";
+        }
       }, 1500);
     } else {
-      // new PopupMsg("Error: Invalid email or password", MsgType.Error);
+      new PopupMsg("Error: Invalid email or password", MsgType.Error);
       console.log("here in the login in the else");
     }
   }
+};
+
+const IsValidMobile = (mobile) => {
+  const mobileRegex = /^[0-9]{10,15}$/;
+  if (!mobileRegex.test(mobile)) {
+    new PopupMsg("Error: Invalid mobile number (10-15 digits)", MsgType.Error);
+    return false;
+  }
+  return true;
+};
+
+const IsValidGrade = (grade) => {
+  if (!grade) {
+    new PopupMsg("Error: Please select a grade", MsgType.Error);
+    return false;
+  }
+  return true;
+};
+
+const IsValidAvatar = (file) => {
+  if (!file) {
+    new PopupMsg("Error: Please upload a profile picture", MsgType.Error);
+    return false;
+  }
+  return true;
+};
+
+const SaveImageToDB = (id, file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const request = indexedDB.open("UserAssets", 1);
+
+      request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains("avatars")) {
+          db.createObjectStore("avatars", { keyPath: "id" });
+        }
+      };
+
+      request.onsuccess = (e) => {
+        const db = e.target.result;
+        const tx = db.transaction("avatars", "readwrite");
+        const store = tx.objectStore("avatars");
+
+        store.put({ id: id, image: reader.result });
+
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      };
+
+      request.onerror = () => reject(request.error);
+    };
+
+    reader.onerror = () => reject(reader.error);
+
+    reader.readAsDataURL(file);
+  });
 };
 
 const IsValidEmail = (email) => {

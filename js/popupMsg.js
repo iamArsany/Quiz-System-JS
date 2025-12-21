@@ -10,8 +10,8 @@ class PopupMsg {
       case MsgType.Hint:
         this.hintPopup(Msg);
         break;
-      case MsgType.Sucess:
-        this.sucessPopup(Msg);
+      case MsgType.Success:
+        this.successPopup(Msg);
         break;
       case MsgType.Error:
         this.errorPopup(Msg);
@@ -26,7 +26,7 @@ class PopupMsg {
     this.InitPopup(Msg, "bg-blue-600");
   }
 
-  sucessPopup(Msg) {
+  successPopup(Msg) {
     this.InitPopup(Msg, "bg-green-600");
   }
 

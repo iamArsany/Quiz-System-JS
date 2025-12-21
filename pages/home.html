@@ -13,9 +13,16 @@
       <div class="flex items-center gap-4">
         <a href="profile.html" class="group transition duration-300">
           <div
-            class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl border-2 border-transparent group-hover:border-blue-600 group-hover:bg-white group-hover:text-blue-600 overflow-hidden"
+            class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden border-2 border-transparent group-hover:border-blue-600"
           >
-            <span id="user-initials">U</span>
+            <img
+              id="user-avatar"
+              class="hidden w-full h-full object-cover"
+              alt="User Avatar"
+            />
+            <span id="user-initials" class="text-white font-bold text-xl">
+              U
+            </span>
           </div>
         </a>
         <div>
@@ -34,7 +41,7 @@
     <main class="max-w-6xl mx-auto p-6 space-y-12">
       <section>
         <div class="flex items-center gap-2 mb-6">
-          <div class="h-8 w-1 bg-green-600 rounded-full"></div>
+          <div class="h-8 w-1 bg-blue-600 rounded-full"></div>
           <h2 class="text-2xl font-bold text-gray-800">Required Exams</h2>
         </div>
 
@@ -43,7 +50,7 @@
             class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
           >
             <span
-              class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded uppercase"
+              class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded uppercase"
               >Active</span
             >
             <h3 class="text-xl font-bold mt-3 text-gray-800">
@@ -54,7 +61,7 @@
             </p>
             <a
               href="exam-math.html"
-              class="mt-6 block w-full text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-medium"
+              class="mt-6 block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
             >
               Start Exam
             </a>
@@ -64,7 +71,7 @@
             class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
           >
             <span
-              class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded uppercase"
+              class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded uppercase"
               >Active</span
             >
             <h3 class="text-xl font-bold mt-3 text-gray-800">Physics 101</h3>
@@ -73,7 +80,7 @@
             </p>
             <a
               href="exam-physics.html"
-              class="mt-6 block w-full text-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition font-medium"
+              class="mt-6 block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
             >
               Start Exam
             </a>
@@ -83,7 +90,7 @@
 
       <section>
         <div class="flex items-center gap-2 mb-6">
-          <div class="h-8 w-1 bg-blue-600 rounded-full"></div>
+          <div class="h-8 w-1 bg-green-600 rounded-full"></div>
           <h2 class="text-2xl font-bold text-gray-800">Previous Exams</h2>
         </div>
 
@@ -95,13 +102,13 @@
               <h3 class="text-lg font-bold text-gray-700">
                 English Literature
               </h3>
-              <span class="text-blue-600 font-bold">85/100</span>
+              <span class="text-green-600 font-bold">85/100</span>
             </div>
             <p class="text-gray-500 text-xs mt-1">Completed: Oct 12, 2023</p>
             <hr class="my-4 border-gray-200" />
             <a
               href="results-english.html"
-              class="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1"
+              class="text-green-600 hover:text-green-800 text-sm font-semibold flex items-center gap-1"
             >
               View Previous Answers <span>&rarr;</span>
             </a>
@@ -112,13 +119,13 @@
           >
             <div class="flex justify-between items-start">
               <h3 class="text-lg font-bold text-gray-700">Computer Science</h3>
-              <span class="text-blue-600 font-bold">92/100</span>
+              <span class="text-green-600 font-bold">92/100</span>
             </div>
             <p class="text-gray-500 text-xs mt-1">Completed: Sep 28, 2023</p>
             <hr class="my-4 border-gray-200" />
             <a
               href="results-cs.html"
-              class="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center gap-1"
+              class="text-green-600 hover:text-green-800 text-sm font-semibold flex items-center gap-1"
             >
               View Previous Answers <span>&rarr;</span>
             </a>
@@ -127,26 +134,6 @@
       </section>
     </main>
 
-    <script>
-      // Load User Data
-      document.addEventListener("DOMContentLoaded", () => {
-        const userStr = localStorage.getItem("currentUser");
-        if (!userStr) {
-          window.location.href = "login.html";
-          return;
-        }
-
-        const user = JSON.parse(userStr);
-        document.getElementById("display-name").innerText = user.username;
-        document.getElementById("user-initials").innerText = user.username
-          .charAt(0)
-          .toUpperCase();
-      });
-
-      const logout = () => {
-        localStorage.removeItem("currentUser");
-        window.location.href = "login.html";
-      };
-    </script>
+    <script src="../js/handleProfile.js"></script>
   </body>
 </html>
