@@ -109,12 +109,15 @@ const SaveImageToDB = (id, file) => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      const request = indexedDB.open("UserAssets", 1);
+      const request = indexedDB.open("UserAssets", 3);
 
       request.onupgradeneeded = (e) => {
         const db = e.target.result;
         if (!db.objectStoreNames.contains("avatars")) {
           db.createObjectStore("avatars", { keyPath: "id" });
+        }
+        if (!db.objectStoreNames.contains("questionImages")) {
+          db.createObjectStore("questionImages", { keyPath: "id" });
         }
       };
 
