@@ -1,165 +1,225 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Teacher Dashboard - Exam System</title>
+    <style>
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <title>Teacher Dashboard - Exam System</title>
-  <style>
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
 
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
-</head>
-
-<body class="bg-gray-50 min-h-screen font-sans">
-  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center">
-      <div class="flex items-center gap-10">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-            E
-          </div>
-          <span class="text-xl font-black tracking-tight text-gray-800">ExamSys</span>
-        </div>
-        <div class="flex gap-1">
-          <button onclick="switchView('exam-list-section')"
-            class="px-4 py-2 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 transition">
-            My Exams
-          </button>
-          <button onclick="switchView('results-section')"
-            class="px-4 py-2 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 transition">
-            Exam Results
-          </button>
-        </div>
-      </div>
-      <div class="flex items-center gap-6">
-        <div class="text-right">
-          <p id="teacher-name" class="text-sm font-bold text-gray-800 leading-none"></p>
-          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-            Teacher Account
-          </p>
-        </div>
-        <button onclick="logout()" class="text-red-500 hover:text-red-700 text-sm font-bold">
-          Logout
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <main class="max-w-7xl mx-auto p-6 md:p-10">
-    <section id="exam-list-section" class="view-section">
-      <div class="flex justify-between items-end mb-8">
-        <div>
-          <h2 class="text-3xl font-black text-gray-900">Dashboard</h2>
-          <p class="text-gray-500">
-            Manage your exam blueprints and versions.
-          </p>
-        </div>
-        <button onclick="startNewExamFlow()"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-95">
-          + New Exam
-        </button>
-      </div>
-      <div id="exams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </section>
-
-    <section id="editor-section" class="view-section hidden">
-      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <div id="editor-setup" class="max-w-md mx-auto py-20 px-6 space-y-8">
-          <div class="text-center">
-            <h2 class="text-3xl font-black text-gray-900">Exam Setup</h2>
-            <p class="text-gray-500">Configure your exam parameters</p>
-          </div>
-
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <label class="text-[10px] font-black text-gray-400 uppercase ml-2">Exam Title</label>
-              <input type="text" id="setup-title"
-                class="w-full p-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all"
-                placeholder="e.g. Midterm Mathematics" />
+  <body class="bg-gray-50 min-h-screen font-sans">
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div
+        class="max-w-7xl mx-auto px-6 h-16 flex justify-between items-center"
+      >
+        <div class="flex items-center gap-10">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold"
+            >
+              E
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <span class="text-xl font-black tracking-tight text-gray-800"
+              >ExamSys</span
+            >
+          </div>
+          <div class="flex gap-1">
+            <button
+              onclick="switchView('exam-list-section')"
+              class="px-4 py-2 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 transition"
+            >
+              My Exams
+            </button>
+            <button
+              onclick="switchView('results-section')"
+              class="px-4 py-2 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 transition"
+            >
+              Exam Results
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center gap-6">
+          <div class="text-right">
+            <p
+              id="teacher-name"
+              class="text-sm font-bold text-gray-800 leading-none"
+            ></p>
+            <p
+              class="text-[10px] text-gray-400 font-bold uppercase tracking-widest"
+            >
+              Teacher Account
+            </p>
+          </div>
+          <button
+            onclick="logout()"
+            class="text-red-500 hover:text-red-700 text-sm font-bold"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-6 md:p-10">
+      <section id="exam-list-section" class="view-section">
+        <div class="flex justify-between items-end mb-8">
+          <div>
+            <h2 class="text-3xl font-black text-gray-900">Dashboard</h2>
+            <p class="text-gray-500">
+              Manage your exam blueprints and versions.
+            </p>
+          </div>
+          <button
+            onclick="startNewExamFlow()"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-95"
+          >
+            + New Exam
+          </button>
+        </div>
+        <div
+          id="exams-grid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
+      </section>
+
+      <section id="editor-section" class="view-section hidden">
+        <div
+          class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <div id="editor-setup" class="max-w-md mx-auto py-20 px-6 space-y-8">
+            <div class="text-center">
+              <h2 class="text-3xl font-black text-gray-900">Exam Setup</h2>
+              <p class="text-gray-500">Configure your exam parameters</p>
+            </div>
+
+            <div class="space-y-4">
               <div class="space-y-1">
-                <label class="text-[10px] font-black text-gray-400 uppercase ml-2">Duration (Min)</label>
-                <input type="number" id="setup-duration"
+                <label
+                  class="text-[10px] font-black text-gray-400 uppercase ml-2"
+                  >Exam Title</label
+                >
+                <input
+                  type="text"
+                  id="setup-title"
                   class="w-full p-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all"
-                  placeholder="60" />
+                  placeholder="e.g. Midterm Mathematics"
+                />
               </div>
-              <div class="space-y-1">
-                <label class="text-[10px] font-black text-gray-400 uppercase ml-2">No. of Questions</label>
-                <input type="number" id="setup-count"
-                  class="w-full p-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all"
-                  placeholder="15" />
+              <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label
+                    class="text-[10px] font-black text-gray-400 uppercase ml-2"
+                    >Duration (Min)</label
+                  >
+                  <input
+                    type="number"
+                    id="setup-duration"
+                    class="w-full p-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all"
+                    placeholder="60"
+                  />
+                </div>
+                <div class="space-y-1">
+                  <label
+                    class="text-[10px] font-black text-gray-400 uppercase ml-2"
+                    >No. of Questions</label
+                  >
+                  <input
+                    type="number"
+                    id="setup-count"
+                    class="w-full p-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all"
+                    placeholder="15"
+                  />
+                </div>
               </div>
             </div>
+
+            <button
+              onclick="initQuestionEditor()"
+              class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-100 transition hover:bg-blue-700"
+            >
+              Continue to Editor
+            </button>
           </div>
 
-          <button onclick="initQuestionEditor()"
-            class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-100 transition hover:bg-blue-700">
-            Continue to Editor
-          </button>
+          <div id="question-workspace" class="hidden p-8 md:p-12"></div>
         </div>
+      </section>
 
-        <div id="question-workspace" class="hidden p-8 md:p-12"></div>
-      </div>
-    </section>
-
-    <section id="assignment-section" class="view-section hidden">
-      <div class="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
-        <div class="p-8 border-b">
-          <h2 class="text-2xl font-black text-gray-900">Assign Students</h2>
-          <p class="text-gray-500">
-            Select who should receive this exam version.
-          </p>
+      <section id="assignment-section" class="view-section hidden">
+        <div
+          class="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden"
+        >
+          <div class="p-8 border-b">
+            <h2 class="text-2xl font-black text-gray-900">Assign Students</h2>
+            <p class="text-gray-500">
+              Select who should receive this exam version.
+            </p>
+          </div>
+          <div
+            id="student-list"
+            class="p-6 space-y-2 max-h-[400px] overflow-y-auto no-scrollbar"
+          ></div>
+          <div class="p-6 bg-gray-50 flex justify-end gap-3">
+            <button
+              onclick="switchView('exam-list-section')"
+              class="px-6 py-3 font-bold text-gray-500"
+            >
+              Cancel
+            </button>
+            <button
+              onclick="confirmAssignment()"
+              class="px-8 py-3 bg-green-600 text-white rounded-2xl font-bold shadow-lg shadow-green-100"
+            >
+              Confirm & Assign
+            </button>
+          </div>
         </div>
-        <div id="student-list" class="p-6 space-y-2 max-h-[400px] overflow-y-auto no-scrollbar"></div>
-        <div class="p-6 bg-gray-50 flex justify-end gap-3">
-          <button onclick="switchView('exam-list-section')" class="px-6 py-3 font-bold text-gray-500">
-            Cancel
-          </button>
-          <button onclick="confirmAssignment()"
-            class="px-8 py-3 bg-green-600 text-white rounded-2xl font-bold shadow-lg shadow-green-100">
-            Confirm & Assign
-          </button>
+      </section>
+
+      <section id="results-section" class="view-section hidden">
+        <h2 class="text-3xl font-black text-gray-900 mb-8">Exam Results</h2>
+        <div
+          class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr
+                class="bg-gray-50/50 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b"
+              >
+                <th class="p-6">Student Name</th>
+                <th class="p-6">Exam Title</th>
+                <th class="p-6">Version</th>
+                <th class="p-6">Score</th>
+                <th class="p-6">Status</th>
+              </tr>
+            </thead>
+            <tbody
+              id="results-table-body"
+              class="divide-y divide-gray-100"
+            ></tbody>
+          </table>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <section id="results-section" class="view-section hidden">
-      <h2 class="text-3xl font-black text-gray-900 mb-8">Exam Results</h2>
-      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-gray-50/50 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b">
-              <th class="p-6">Student Name</th>
-              <th class="p-6">Exam Title</th>
-              <th class="p-6">Version</th>
-              <th class="p-6">Score</th>
-              <th class="p-6">Status</th>
-              <th class="p-6">Date Submitted</th>
-            </tr>
-          </thead>
-          <tbody id="results-table-body" class="divide-y divide-gray-100"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <script src="../js/shared.js"></script>
-  <script src="../js/popupMsg.js"></script>
-  <script src="../js/storage-api.js"></script>
-  <script src="../js/handleProfile.js"></script>
-  <script src="../js/dashboard.js"></script>
-  <script src="../js/exam-editor.js"></script>
-  <script src="../js/results.js"></script>
-  <script src="../js/assignment.js"></script>
-</body>
-
+    <script src="../js/shared.js"></script>
+    <script src="../js/popupMsg.js"></script>
+    <script src="../js/storage-api.js"></script>
+    <script src="../js/handleProfile.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/exam-editor.js"></script>
+    <script src="../js/results.js"></script>
+    <script src="../js/assignment.js"></script>
+  </body>
 </html>
+
