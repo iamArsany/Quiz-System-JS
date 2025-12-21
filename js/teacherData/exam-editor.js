@@ -121,7 +121,7 @@ const initQuestionEditor = () => {
   const Duration = parseInt(document.getElementById("setup-duration").value);
   const QCount = parseInt(document.getElementById("setup-count").value);
 
-  const QNum = 1;
+  const QNum = 15;
   if (!Title) return new PopupMsg("Exam Title is required", MsgType.Error);
   if (isNaN(Duration) || Duration <= 0)
     return new PopupMsg("Invalid Duration", MsgType.Error);
@@ -216,15 +216,15 @@ const renderEditorUI = async () => {
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 ${[1, 2, 3, 4]
-      .map(
-        (i) => `
+                  .map(
+                    (i) => `
                     <div class="flex items-center gap-3 p-3 border rounded-xl bg-gray-50">
                         <input type="radio" name="correct-choice" value="edit-c${i}" ${Q.QAns === Q[`QC${i}`] && Q.QAns !== "" ? "checked" : ""} class="w-5 h-5 cursor-pointer">
                         <input type="text" id="edit-c${i}" value="${Q[`QC${i}`]}" placeholder="Choice ${i}" class="w-full bg-transparent outline-none">
                     </div>
                 `,
-      )
-      .join("")}
+                  )
+                  .join("")}
             </div>
 
             <div class="flex gap-4">
@@ -246,10 +246,11 @@ const renderEditorUI = async () => {
         <div class="flex justify-between mt-10 pt-6 border-t">
             <button onclick="navigateOnly(${EditIndex - 1})" ${EditIndex === 0 ? "disabled" : ""} class="px-6 py-3 text-gray-400 font-bold disabled:opacity-30">Previous</button>
             
-            ${IsLast
-      ? `<button onclick="validateAndSaveCurrent(true)" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Finalize Exam</button>`
-      : `<button onclick="validateAndSaveCurrent(false)" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Save & Next</button>`
-    }
+            ${
+              IsLast
+                ? `<button onclick="validateAndSaveCurrent(true)" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Finalize Exam</button>`
+                : `<button onclick="validateAndSaveCurrent(false)" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Save & Next</button>`
+            }
         </div>
     `;
 };
