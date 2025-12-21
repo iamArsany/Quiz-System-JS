@@ -1,6 +1,6 @@
 const RetrieveImageFromDB = (userId) => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("UserAssets", 3);
+    const request = indexedDB.open("UserAssets", 4);
 
     request.onsuccess = (e) => {
       const db = e.target.result;

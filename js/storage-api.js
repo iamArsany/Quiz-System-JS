@@ -50,30 +50,58 @@ const StorageAPI = {
   assignExam: (examId, versionId, studentIds) => {
     let assignments = JSON.parse(localStorage.getItem("AssignedExams") || "[]");
 
-    const newAssignment = {
-      assignmentId: Date.now().toString(),
-      examId: examId,
-      versionId: versionId,
-      studentIds: studentIds,
-      dateAssigned: new Date().toLocaleDateString(),
-    };
+    studentIds.forEach((sid) => {
+      const newAssignment = {
+        assignmentId: `assign_${Date.now()}_${sid}`,
+        examId: examId,
+        versionId: versionId,
+        studentId: sid,
+        status: "Pending",
+        dateAssigned: new Date().toLocaleDateString(),
+      };
+      assignments.push(newAssignment);
+    });
 
-    assignments.push(newAssignment);
     localStorage.setItem("AssignedExams", JSON.stringify(assignments));
   },
 
   // 4. Save Question Image to IndexedDB
   saveQuestionImage: (id, base64) => {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("UserAssets", 3);
+      const request = indexedDB.open("UserAssets", 4);
+
+      request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+
+        if (!db.objectStoreNames.contains("questionImages")) {
+          db.createObjectStore("questionImages", { keyPath: "id" });
+        }
+      };
+
       request.onsuccess = (e) => {
         const db = e.target.result;
+
+        if (!db.objectStoreNames.contains("questionImages")) {
+          db.close();
+          reject("Object store questionImages does not exist");
+          return;
+        }
+
         const tx = db.transaction("questionImages", "readwrite");
         const store = tx.objectStore("questionImages");
-        store.put({ id: id, image: base64 });
-        tx.oncomplete = () => resolve(id);
-        tx.onerror = () => reject(tx.error);
+
+        const putReq = store.put({ id, image: base64 });
+
+        putReq.onsuccess = () => resolve(id);
+        putReq.onerror = () => reject(putReq.error);
+
+        tx.oncomplete = () => db.close();
+        tx.onerror = () => {
+          db.close();
+          reject(tx.error);
+        };
       };
+
       request.onerror = () => reject(request.error);
     });
   },
@@ -81,20 +109,95 @@ const StorageAPI = {
   // 5. Get Question Image from IndexedDB
   getQuestionImage: (id) => {
     return new Promise((resolve, reject) => {
-      const request = indexedDB.open("UserAssets", 3);
-      request.onsuccess = (e) => {
+      const request = indexedDB.open("UserAssets", 4);
+
+      request.onupgradeneeded = (e) => {
         const db = e.target.result;
         if (!db.objectStoreNames.contains("questionImages")) {
+          db.createObjectStore("questionImages", { keyPath: "id" });
+        }
+      };
+
+      request.onsuccess = (e) => {
+        const db = e.target.result;
+
+        if (!db.objectStoreNames.contains("questionImages")) {
+          db.close();
           resolve(null);
           return;
         }
+
         const tx = db.transaction("questionImages", "readonly");
         const store = tx.objectStore("questionImages");
         const getReq = store.get(id);
-        getReq.onsuccess = () => resolve(getReq.result ? getReq.result.image : null);
+
+        getReq.onsuccess = () => {
+          resolve(getReq.result ? getReq.result.image : null);
+        };
+
         getReq.onerror = () => reject(getReq.error);
+        tx.oncomplete = () => db.close();
       };
+
       request.onerror = () => reject(request.error);
     });
+  },
+
+  // 6. Get Student Assignments
+  getStudentAssignments: (studentId) => {
+    const assignments = JSON.parse(
+      localStorage.getItem("AssignedExams") || "[]",
+    );
+    const exams = JSON.parse(localStorage.getItem("exams") || "[]");
+
+    // Find assignments for this student (Handle String/Number mismatch)
+    const myAssignments = assignments.filter(
+      (a) => String(a.studentId) === String(studentId),
+    );
+
+    // Map to exam details
+    return myAssignments
+      .map((a) => {
+        const exam = exams.find((e) => e.id === a.examId);
+        if (!exam) return null;
+
+        // Get specific version
+        const version = exam.versions.find((v) => v.versionId === a.versionId);
+        if (!version) return null;
+
+        return {
+          assignmentId: a.assignmentId,
+          examId: exam.id,
+          title: exam.title,
+          duration: exam.duration,
+          questions: version.questions,
+          versionId: a.versionId,
+          status: a.status,
+        };
+      })
+      .filter((e) => e !== null);
+  },
+
+  // 7. Update Assignment Status
+  updateAssignmentStatus: (assignmentId, status) => {
+    let assignments = JSON.parse(localStorage.getItem("AssignedExams") || "[]");
+    const index = assignments.findIndex((a) => a.assignmentId === assignmentId);
+    if (index > -1) {
+      assignments[index].status = status;
+      localStorage.setItem("AssignedExams", JSON.stringify(assignments));
+    }
+  },
+
+  // 7. Save Exam Result
+  saveExamResult: (result) => {
+    const results = JSON.parse(localStorage.getItem("ExamResults") || "[]");
+    results.push(result);
+    localStorage.setItem("ExamResults", JSON.stringify(results));
+  },
+
+  // 8. Get Student Results
+  getStudentResults: (studentId) => {
+    const results = JSON.parse(localStorage.getItem("ExamResults") || "[]");
+    return results.filter((r) => r.studentId === studentId);
   },
 };

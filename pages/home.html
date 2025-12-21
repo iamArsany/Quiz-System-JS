@@ -1,139 +1,134 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>Home - Exam Portal</title>
-  </head>
-  <body class="bg-gray-50 min-h-screen">
-    <nav
-      class="bg-white shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-50"
-    >
-      <div class="flex items-center gap-4">
-        <a href="profile.html" class="group transition duration-300">
-          <div
-            class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden border-2 border-transparent group-hover:border-blue-600"
-          >
-            <img
-              id="user-avatar"
-              class="hidden w-full h-full object-cover"
-              alt="User Avatar"
-            />
-            <span id="user-initials" class="text-white font-bold text-xl">
-              U
-            </span>
-          </div>
-        </a>
-        <div>
-          <p class="text-xs text-gray-500">Welcome back,</p>
-          <p id="display-name" class="font-bold text-gray-800">User</p>
-        </div>
-      </div>
-      <button
-        onclick="logout()"
-        class="text-sm text-red-600 hover:underline font-medium"
-      >
-        Logout
-      </button>
-    </nav>
 
-    <main class="max-w-6xl mx-auto p-6 space-y-12">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Home - Exam Portal</title>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <nav class="bg-white shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+      <a href="profile.html" class="group transition duration-300">
+        <div
+          class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center overflow-hidden border-2 border-transparent group-hover:border-blue-600">
+          <img id="user-avatar" class="hidden w-full h-full object-cover" alt="User Avatar" />
+          <span id="user-initials" class="text-white font-bold text-xl">
+            U
+          </span>
+        </div>
+      </a>
+      <div>
+        <p class="text-xs text-gray-500">Welcome back,</p>
+        <p id="display-name" class="font-bold text-gray-800">User</p>
+      </div>
+    </div>
+    <button onclick="logout()" class="text-sm text-red-600 hover:underline font-medium">
+      Logout
+    </button>
+  </nav>
+
+  <main class="max-w-6xl mx-auto p-6 space-y-12">
+    <!-- Dashboard Section -->
+    <div id="dashboard-section">
       <section>
         <div class="flex items-center gap-2 mb-6">
           <div class="h-8 w-1 bg-blue-600 rounded-full"></div>
           <h2 class="text-2xl font-bold text-gray-800">Required Exams</h2>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
-          >
-            <span
-              class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded uppercase"
-              >Active</span
-            >
-            <h3 class="text-xl font-bold mt-3 text-gray-800">
-              Advanced Mathematics
-            </h3>
-            <p class="text-gray-500 text-sm mt-2">
-              Duration: 60 mins • 30 Questions
-            </p>
-            <a
-              href="exam-math.html"
-              class="mt-6 block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
-            >
-              Start Exam
-            </a>
-          </div>
-
-          <div
-            class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
-          >
-            <span
-              class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded uppercase"
-              >Active</span
-            >
-            <h3 class="text-xl font-bold mt-3 text-gray-800">Physics 101</h3>
-            <p class="text-gray-500 text-sm mt-2">
-              Duration: 45 mins • 20 Questions
-            </p>
-            <a
-              href="exam-physics.html"
-              class="mt-6 block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
-            >
-              Start Exam
-            </a>
-          </div>
+        <div id="required-exams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Content -->
         </div>
       </section>
 
-      <section>
+      <section class="mt-12">
         <div class="flex items-center gap-2 mb-6">
           <div class="h-8 w-1 bg-green-600 rounded-full"></div>
           <h2 class="text-2xl font-bold text-gray-800">Previous Exams</h2>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            class="bg-gray-100 border border-gray-200 rounded-xl p-6 opacity-90"
-          >
-            <div class="flex justify-between items-start">
-              <h3 class="text-lg font-bold text-gray-700">
-                English Literature
-              </h3>
-              <span class="text-green-600 font-bold">85/100</span>
-            </div>
-            <p class="text-gray-500 text-xs mt-1">Completed: Oct 12, 2023</p>
-            <hr class="my-4 border-gray-200" />
-            <a
-              href="results-english.html"
-              class="text-green-600 hover:text-green-800 text-sm font-semibold flex items-center gap-1"
-            >
-              View Previous Answers <span>&rarr;</span>
-            </a>
-          </div>
-
-          <div
-            class="bg-gray-100 border border-gray-200 rounded-xl p-6 opacity-90"
-          >
-            <div class="flex justify-between items-start">
-              <h3 class="text-lg font-bold text-gray-700">Computer Science</h3>
-              <span class="text-green-600 font-bold">92/100</span>
-            </div>
-            <p class="text-gray-500 text-xs mt-1">Completed: Sep 28, 2023</p>
-            <hr class="my-4 border-gray-200" />
-            <a
-              href="results-cs.html"
-              class="text-green-600 hover:text-green-800 text-sm font-semibold flex items-center gap-1"
-            >
-              View Previous Answers <span>&rarr;</span>
-            </a>
-          </div>
+        <div id="previous-exams-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamic Content -->
         </div>
       </section>
-    </main>
+    </div>
 
-    <script src="../js/handleProfile.js"></script>
-  </body>
+    <!-- Exam Interface -->
+    <section id="exam-interface" class="hidden max-w-3xl mx-auto">
+      <!-- Start Overlay -->
+      <div id="start-overlay" class="text-center py-20 bg-white rounded-3xl shadow-lg border border-gray-100">
+        <h2 class="text-4xl font-black text-gray-900 mb-4">Ready to Start?</h2>
+        <p class="text-gray-500 mb-8">Once you start, the timer will begin. Good luck!</p>
+        <button onclick="startQuiz()"
+          class="bg-blue-600 text-white px-12 py-4 rounded-2xl font-bold text-xl shadow-lg hover:bg-blue-700 transition transform hover:scale-105">
+          Start Quiz
+        </button>
+      </div>
+
+      <!-- Question Container -->
+      <div id="question-container" class="hidden bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
+        <!-- Header -->
+        <div class="bg-gray-50 p-6 flex justify-between items-center border-b border-gray-100">
+          <span id="q-progress" class="font-bold text-gray-500 text-sm uppercase tracking-wider">Question 1 of 10</span>
+          <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-100">
+            <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+            <span id="total-timer" class="font-mono font-bold text-gray-700">00:00</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="h-1 bg-gray-100 w-full">
+          <div id="q-timer-bar" class="h-full bg-blue-500 transition-all duration-1000 ease-linear" style="width: 100%">
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-8 md:p-12 space-y-8">
+          <div class="space-y-4">
+            <p id="q-text" class="text-2xl font-bold text-gray-800 leading-relaxed"></p>
+            <img id="q-image" class="hidden max-h-64 rounded-xl border border-gray-200 object-cover" />
+          </div>
+
+          <div id="choices-grid" class="grid grid-cols-1 gap-4">
+            <!-- Choices Buttons -->
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-6 bg-gray-50 border-t border-gray-100 flex justify-end">
+          <button id="next-btn" onclick="nextQuestion()" disabled
+            class="bg-gray-800 text-white px-8 py-3 rounded-xl font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-900 transition">
+            Next Question
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result Interface -->
+    <section id="result-interface" class="hidden max-w-md mx-auto text-center py-20">
+      <div class="bg-white rounded-3xl shadow-xl p-10 border border-gray-100">
+        <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <span class="text-4xl">🏆</span>
+        </div>
+        <h2 class="text-3xl font-black text-gray-900 mb-2">Exam Completed!</h2>
+        <p class="text-gray-500 mb-8">Your final score is</p>
+
+        <div class="text-6xl font-black text-blue-600 mb-8" id="final-score">0/100</div>
+
+        <button onclick="returnToDashboard()"
+          class="w-full bg-gray-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition">
+          Back to Dashboard
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/shared.js"></script>
+  <script src="../js/popupMsg.js"></script>
+  <script src="../js/storage-api.js"></script>
+  <script src="../js/handleProfile.js"></script>
+  <script src="../js/student-exam.js"></script>
+</body>
+
 </html>

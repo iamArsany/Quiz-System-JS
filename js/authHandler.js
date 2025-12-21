@@ -109,7 +109,7 @@ const SaveImageToDB = (id, file) => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      const request = indexedDB.open("UserAssets", 3);
+      const request = indexedDB.open("UserAssets", 4);
 
       request.onupgradeneeded = (e) => {
         const db = e.target.result;
