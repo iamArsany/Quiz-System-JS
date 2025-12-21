@@ -15,6 +15,7 @@ const startNewExamFlow = () => {
   if (titleInput) titleInput.value = "";
   if (durationInput) durationInput.value = "";
   if (countInput) countInput.value = "";
+  if (document.getElementById("setup-level")) document.getElementById("setup-level").value = "Easy";
 
   // Show Setup, Hide Workspace
   const setupDiv = document.getElementById("editor-setup");
@@ -48,10 +49,12 @@ const editExam = (examId) => {
   const titleInput = document.getElementById("setup-title");
   const durationInput = document.getElementById("setup-duration");
   const countInput = document.getElementById("setup-count");
+  const levelInput = document.getElementById("setup-level");
 
   if (titleInput) titleInput.value = exam.title;
   if (durationInput) durationInput.value = exam.duration;
   if (countInput) countInput.value = examQuestions.length;
+  if (levelInput) levelInput.value = exam.level || "Easy";
 
   // Show Setup (so they can edit title/duration)
   const setupDiv = document.getElementById("editor-setup");
@@ -76,6 +79,7 @@ const saveAndNav = (newIndex) => {
   q.QC4 = document.getElementById("edit-c4").value;
   q.QAns = document.getElementById("edit-qans").value;
   q.QScore = parseInt(document.getElementById("edit-qscore").value) || 0;
+  q.QLevel = document.getElementById("edit-qlevel").value;
 
   editIndex = newIndex;
   renderEditorUI();
@@ -115,8 +119,9 @@ const finalizeExamProcess = async () => {
   const savedId = StorageAPI.saveExam(examData);
   currentExamId = savedId;
 
-  // Move to Assignment View
-  openAssignmentView(savedId);
+  // Optional Assignment: Just show success and go to list
+  new PopupMsg("Exam Saved Successfully!", MsgType.Success);
+  switchView("exam-list-section");
 };
 
 /**
@@ -231,31 +236,40 @@ const renderEditorUI = async () => {
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 ${[1, 2, 3, 4]
-                  .map(
-                    (i) => `
+      .map(
+        (i) => `
                     <div class="flex items-center gap-3 p-3 border rounded-xl bg-gray-50">
                         <input type="radio" name="correct-choice" value="edit-c${i}" ${q.QAns === q[`QC${i}`] && q.QAns !== "" ? "checked" : ""} class="w-5 h-5 cursor-pointer">
                         <input type="text" id="edit-c${i}" value="${q[`QC${i}`]}" placeholder="Choice ${i}" class="w-full bg-transparent outline-none">
                     </div>
                 `,
-                  )
-                  .join("")}
+      )
+      .join("")}
             </div>
 
-            <div class="w-32">
-                <label class="text-sm font-bold text-gray-600">Points</label>
-                <input type="number" id="edit-qscore" value="${q.QScore}" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none">
+            <div class="flex gap-4">
+                <div class="w-32">
+                    <label class="text-sm font-bold text-gray-600">Points</label>
+                    <input type="number" id="edit-qscore" value="${q.QScore}" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none">
+                </div>
+                <div class="w-48">
+                    <label class="text-sm font-bold text-gray-600">Difficulty</label>
+                    <select id="edit-qlevel" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none bg-white">
+                        <option value="Easy" ${q.QLevel === "Easy" ? "selected" : ""}>Easy</option>
+                        <option value="Medium" ${q.QLevel === "Medium" ? "selected" : ""}>Medium</option>
+                        <option value="Hard" ${q.QLevel === "Hard" ? "selected" : ""}>Hard</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class="flex justify-between mt-10 pt-6 border-t">
             <button onclick="navigateOnly(${editIndex - 1})" ${editIndex === 0 ? "disabled" : ""} class="px-6 py-3 text-gray-400 font-bold disabled:opacity-30">Previous</button>
             
-            ${
-              isLast
-                ? `<button onclick="validateAndSaveCurrent(true)" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Finalize Exam</button>`
-                : `<button onclick="validateAndSaveCurrent(false)" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Save & Next</button>`
-            }
+            ${isLast
+      ? `<button onclick="validateAndSaveCurrent(true)" class="bg-green-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Finalize Exam</button>`
+      : `<button onclick="validateAndSaveCurrent(false)" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg">Save & Next</button>`
+    }
         </div>
     `;
 };
@@ -270,6 +284,7 @@ const validateAndSaveCurrent = (isFinalizing) => {
   const c3 = document.getElementById("edit-c3").value.trim();
   const c4 = document.getElementById("edit-c4").value.trim();
   const score = parseInt(document.getElementById("edit-qscore").value);
+  const level = document.getElementById("edit-qlevel").value;
   const selectedRadio = document.querySelector(
     'input[name="correct-choice"]:checked',
   );
@@ -309,6 +324,7 @@ const validateAndSaveCurrent = (isFinalizing) => {
   q.QC4 = c4;
   q.QAns = correctText;
   q.QScore = score;
+  q.QLevel = level;
 
   if (isFinalizing) {
     finalizeExamProcess();
