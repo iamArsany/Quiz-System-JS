@@ -6,6 +6,7 @@ console.log("Testing the Main File");
 
   const userId = Date.now();
   const studentId = Date.now() + 10;
+  const studentId2 = Date.now() + 20;
 
   const newUser = {
     id: userId,
@@ -18,11 +19,21 @@ console.log("Testing the Main File");
   };
   const newStudent = {
     id: studentId,
-    username: "student",
+    username: "student1",
     email: "st1@g.com",
     password: "123123123Aa",
     mobile: "1234567812",
     grade: "3",
+    Role: UserRole.Student,
+  };
+
+  const newStudent2 = {
+    id: studentId2,
+    username: "student2",
+    email: "st2@g.com",
+    password: "123123123Aa",
+    mobile: "1234567813",
+    grade: "4",
     Role: UserRole.Student,
   };
 
@@ -32,11 +43,12 @@ console.log("Testing the Main File");
     return;
   }
 
-  users.push(newUser, newStudent);
+  users.push(newUser, newStudent, newStudent2);
   localStorage.setItem("users", JSON.stringify(users));
 
   console.log("Teacher :", newUser);
-  console.log("student :", newStudent);
+  console.log("student1 :", newStudent);
+  console.log("student2 :", newStudent);
 })();
 
 const regBtn = document.getElementById("reg-submit");
